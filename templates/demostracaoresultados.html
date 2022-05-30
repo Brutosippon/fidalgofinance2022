@@ -1,0 +1,51 @@
+{% extends "layout.html" %}
+
+{% block title %}
+    DR
+{% endblock %}
+
+{% block main %}
+    <form action="/demostracaoresultados" method="get">
+        <input autocomplete="off" class="w-5 p-1 form-control" name="ano" placeholder="Pesquisar/Editar ANO" type="search">
+        <button class="w-5 p-2 btn btn-primary" name="editar" type="submit">Editar</button>
+        <!--espaço-->
+        <table class= "table table-striped table-dark"> </table>
+    </form>
+    
+    <form action="/demostracaoresultados" method="post">
+    <table class= "table table-responsive-sm table-striped table-dark">
+        <thead>
+            <tr>
+                <th>Demonstração Resultados</th>
+                <th>Ano N</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td><div class="form-group"><input autocomplete="off" autofocus class="form-control" value="{{data.get("NIF") if data.get("NIF") else ''}}" name="NIF" placeholder="NIF" type="text"></div></td>
+                <td><div class="form-group"><input autocomplete="off" autofocus class="form-control" value="{{data.get("ANO_N") if data.get("ANO_N") else ''}}" name="ANO_N" placeholder="ANO N" type="text"></div></td>
+            </tr>
+            {% for row in  dr %}
+            <tr>
+                <td class="text-left">{{row["rubrica_dr"]}}</td>
+                <td><div class="form-group"><input autocomplete="off" autofocus class="form-control" name="{{row["rubrica_dr"]}}" value="{{data.get(row["rubrica_dr"]) if data.get(row["rubrica_dr"]) else ''}}" placeholder="mCVE" type="text"></div></td>
+            </tr>
+            {% endfor %}
+
+        </tbody>
+
+
+        <tfoot>
+            <tr>
+                <td colspan="4"></td>
+                 <td>DR
+
+                 </td>
+
+            </tr>
+
+        </tfoot>
+    </table>
+    <button class="btn btn-primary" name="save" type="submit">save</button>
+ </form>
+{% endblock %}

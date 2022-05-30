@@ -1,0 +1,151 @@
+{% extends "layout.html" %}
+
+{% block title %}
+    indicadores
+{% endblock %}
+
+{% block main %}
+    <table class= "table table-responsive-sm table-striped table-dark">
+        <thead>
+            <tr>
+                <th>Indicadores/Ratio</th>
+                <th>Ano N-2</th>
+                <th>Ano N-1</th>
+                <th>Ano N</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td>NIF: <!--{{request.form.get("NIF")}}--></td>
+                {% for col in base_balanco %}
+                    <td>{{col["NIF"]}}</td><!--N-n-->
+                {% endfor %}
+            </tr>
+            <tr>
+                <td>ANO: <!--{{request.form.get("NIF")}}--></td>
+                {% for col in base_balanco %}
+                    <td>{{col["ANO_N"]}}</td><!--N-n-->
+                {% endfor %}
+            </tr>
+            <!--poderia ter sido criado uma db_sql com as formulas e depois aplicar em loop-->
+            <!--Viabilidade-->
+            <!--Viabilidade-->
+            <tr>
+                <!--Rentabilidade do Negócio-->
+                <td>Rentabilidade do Negócio</td>
+                {% for col in base_demostracaoresultado %}
+                    <td>{{"{:0.2f}".format(((col["8 - Resultado Líquido"]/col["Total1"])*100))}}%</td>
+                {% endfor %}
+            </tr>
+            <tr>
+                <!--EBITDA-->
+                <td>EBITDA</td>
+                {% for i in base_demostracaoresultado %}
+                    <td>{{"{:,.0f}".format((i["EBITDA-Resultado antes de depreciacoes, gastos de financiamento e impostos"]))}}</td>
+                {% endfor %}
+            </tr>
+            <tr>
+                <!--Dívida Financeira/EBITDA problema em cruzar duas tabelas sql-->
+                <td>Dívida Financeira/EBITDA</td>
+                {% for col in base_demostracaoresultado %}
+                    <td>{{"{:0.2f}".format(((col["8 - Resultado Líquido"]/col["EBITDA-Resultado antes de depreciacoes, gastos de financiamento e impostos"])*100))}}%</td>
+                {% endfor %}
+            </tr>
+            <tr>
+                <!--Rentabilidade do Capital Próprio-->
+                <td>Rentabilidade do Capital Próprio</td>
+                {% for col in base_balanco %}
+                    <td>{{'%.2f' % ((col["EX_1_1_11"]/col["EX_1_1"])*100)}}%</td>
+                {% endfor %}
+            </tr>
+            <!--Liquidez-->
+            <!--Liquidez-->
+            <tr>
+                <!--Liquidez Geral-->
+                <td>Liquidez Geral</td>
+                {% for col in base_balanco %}
+                    <td>{{'%.2f' % ((col["A_1_2"]/col["EX_1_3"]))}}</td>
+                {% endfor %}
+            </tr>
+            <tr>
+                <!--Liquidez Reduzida-->
+                <td>Liquidez Reduzida</td>
+                {% for col in base_balanco %}
+                    <td>{{'%.2f' % (((col["A_1_2"]-col["A_1_2_1"])/col["EX_1_3"]))}}</td>
+                {% endfor %}
+            </tr>
+            <tr>
+                <!--Liquidez Imediata-->
+                <td>Liquidez Imediata</td>
+                {% for col in base_balanco %}
+                    <td>{{'%.2f' % ((col["A_1_2_11"]/col["EX_1_3"]))}}</td>
+                {% endfor %}
+            </tr>
+            <!--Estrutura Financeira-->
+            <!--Estrutura Financeira-->
+            <tr>
+                <!--Autonomia Financeira-->
+                <td>Autonomia Financeira</td>
+                {% for col in base_balanco %}
+                    <td>{{'%.2f' % ((col["EX_1_1"]/col["A_1"])*100)}}%</td>
+                {% endfor %}
+            </tr>
+            <tr>
+                <!--Rácio Solvabilidade-->
+                <td>Rácio Solvabilidade</td>
+                {% for col in base_balanco %}
+                    <td>{{'%.2f' % ((col["EX_1_1"]/col["EX_1_4"])*100)}}%</td>
+                {% endfor %}
+            </tr>
+            <tr>
+                <!--Rácio Endividamento-->
+                <td>Rácio Endividamento</td>
+                {% for col in base_balanco %}
+                    <td>{{'%.2f' % ((col["EX_1_4"]/col["A_1"])*100)}}%</td>
+                {% endfor %}
+            </tr>
+            <!--Equilíbrio-->
+            <!--Equilíbrio-->
+            <td>Ponto Crítico</td>
+                {% for i in base_demostracaoresultado %}
+                    <td>{{"{:,.0f}".format((i["Total3"]/(1-i["Total2"]/i["Total1"])))}}</td>
+                {% endfor %}
+            <tr>
+                <!--Resultado Líquido-->
+                <td>Resultado Líquido</td>
+                {% for i in base_demostracaoresultado %}
+                    <td>{{"{:,.0f}".format((i["8 - Resultado Líquido"]))}}</td>
+                {% endfor %}
+            </tr>
+            <tr>
+                <!--Cash Flow-->
+                <td>Cash Flow</td>
+                {% for i in base_demostracaoresultado %}
+                    <td>{{"{:,.0f}".format((i["8 - Resultado Líquido"]+i["Gastos/Reversões de depreciação e de amortização"]+i["Provisões (aumentos/reduções)"]+i["Imparidade de dívidas a receber (perdas/reversões)"]))}}</td>
+                {% endfor %}
+            </tr>
+            <tr>
+                <!--Fundo Maneio Liquido-->
+                <td>Fundo Maneio Liquido</td>
+                {% for col in base_balanco %}
+                    <td>{{"{:,.0f}".format((col["EX_1_1"]+col["EX_1_2"]-col["A_1_1"]))}}</td>
+                {% endfor %}
+            </tr>
+            <tr>
+                <!--Necessidade Fundo Maneio-->
+                <td>Necessidade Fundo Maneio</td>
+                {% for col in base_balanco %}
+                    <td>{{"{:,.0f}".format((col["A_1_2_1"]+(col["A_1_2"]-col["A_1_2_1"]-col["A_1_2_11"]-col["A_1_2_8"])-col["EX_1_3"]))}}</td>
+                {% endfor %}
+            </tr>
+            <tr>
+                <!--como posso somar dois objetos no html??-->
+                <!--Necessidade Financiamento(NFM-FM)-->
+                <td>Necessidade Financiamento (NFM-FM)</td>
+                {% for col in base_balanco %}
+                    <td>{{"{:,.0f}".format(((col["EX_1_1"]+col["EX_1_2"]-col["A_1_1"])-(col["A_1_2_1"]+(col["A_1_2"]-col["A_1_2_1"]-col["A_1_2_11"]-col["A_1_2_8"])-col["EX_1_3"])))}}</td>
+                {% endfor %}
+            </tr>
+        </tbody>
+    </table>
+{% endblock %}

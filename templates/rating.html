@@ -1,0 +1,31 @@
+{% extends "layout.html" %}
+
+{% block title %}
+    rating
+{% endblock %}
+
+{% block main %}
+    <table class= "table table-striped table-dark">
+        <thead>
+            <tr>
+                <th>Balanço</th>
+                <th>Ano N-2</th>
+                <th>Ano N-1</th>
+                <th>Ano N</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td>ANO: <!--{{request.form.get("NIF")}}--></td>
+                {% for col in base_balanco %}
+                    <td>{{col["ANO_N"]}}</td>
+                {% endfor %}
+            </tr>
+        <td>RATING</td>
+        <td>"WORK IN PROGRESS"</td>
+        <td>"WORK IN PROGRESS"</td>
+
+
+        </tbody>
+    </table>
+{% endblock %}

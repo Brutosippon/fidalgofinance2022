@@ -1,0 +1,77 @@
+{% extends "layout.html" %}
+
+{% block title %}
+    RACIOS
+{% endblock %}
+
+{% block main %}
+<!--TABELA BALANÇO-->
+<!--"{:,.0f}".format() não aceita formatar STR transformar"" em zero na base de dados-->
+    <table class= "table table-responsive-sm table-striped table-dark">
+        <thead>
+            <tr>
+                <th>Balanço</th>
+                <th>Ano N-2</th>
+                <th>Ano N-1</th>
+                <th>Ano N</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td>NIF: <!--{{request.form.get("NIF")}}--></td>
+                {% for col in base_balanco %}
+                    <td>{{col["NIF"]}}</td><!--N-n-->
+                {% endfor %}
+            </tr>
+            <tr>
+                <td>ANO: <!--{{request.form.get("NIF")}}--></td>
+                {% for col in base_balanco %}
+                    <td>{{col["ANO_N"]}}</td><!--N-n-->
+                {% endfor %}
+            </tr>
+            {% for row in  balanco %}
+            <tr>
+                <td class="text-left">{{row["rubrica"]}}</td><!--RUBRICA-->
+                {% for col in base_balanco %}
+                    <td>{{col[row["id"]]}}</td><!--N-n-->
+                    <!--"{:,.0f}".format() não aceita formatar STR transformar"" em zero na base de dados-->
+
+                {% endfor %}
+            </tr>
+            {% endfor %}
+
+
+        </tbody>
+    </table>
+    <!--TABELA DEMONSTRAÇÃO DE RESULTADOS-->
+        <table class= "table table-striped table-dark">
+        <thead>
+            <tr>
+                <th>Demonstrção Resultados</th>
+                <th>Ano N-2</th>
+                <th>Ano N-1</th>
+                <th>Ano N</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td>NIF</td>
+                {% for col in base_demostracaoresultado %}
+                    <td>{{col["ANO_N"]}}</td><!--N-n-->
+                {% endfor %}
+            </tr>
+            {% for row in  dr %}
+            <tr>
+                <td class="text-left">{{row["rubrica_dr"]}}</td><!--RUBRICA-->
+                {% for col in base_demostracaoresultado %}
+                    <td>{{col[row["rubrica_dr"]]}}</td><!--N-n-->
+                    <!--"{:,.0f}".format() não aceita formatar STR transformar"" em zero na base de dados-->
+
+                {% endfor %}
+            </tr>
+            {% endfor %}
+
+
+        </tbody>
+    </table>
+{% endblock %}
