@@ -4,7 +4,7 @@
 #Criar formulario que permita introduzir um balance sheet guardar em um abase SQL
 #Criar uma tabela que apresente os principais rácios
 ###########################################
-####### Web token json#####
+####### Web-token json#####
 ######
 import pandas as pd
 import sqlalchemy
